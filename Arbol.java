@@ -21,14 +21,21 @@ public class Arbol {
     private void insert(int dato, nodoArbol nodoAux, nodoArbol nodo) {
         if (dato == nodoAux.getDato())
             return;
-        if (dato < nodoAux.getDato())
-            if (nodoAux.getIzquierdo() == null)
-                nodoAux.setIzquierdo(nodo);
-            else
-                insert(dato, nodoAux.getIzquierdo(), nodo);
-        else if (nodoAux.getDerecho() == null)
+        if (dato < nodoAux.getDato() && nodoAux.getIzquierdo() == null) {
+            nodoAux.setIzquierdo(nodo);
+            nodoAux.setTieneHijos(true);
+            return;
+        }
+        if (dato < nodoAux.getDato() && nodoAux.getIzquierdo() != null) {
+            insert(dato, nodoAux.getIzquierdo(), nodo);
+            nodoAux.setTieneHijos(true);
+            return;
+        }
+        if (dato > nodoAux.getDato() && nodoAux.getDerecho() == null) {
             nodoAux.setDerecho(nodo);
-        else
+            nodoAux.setTieneHijos(true);
+            return;
+        } else
             insert(dato, nodoAux.getDerecho(), nodo);
         nodoAux.setTieneHijos(true);
     }
@@ -82,87 +89,87 @@ public class Arbol {
 
     public void borrar(int dato) {
         nodoArbol nodoAux = buscar(dato, raiz);
-        if (nodoAux != null) {
-            if (dato == raiz.getDato()) {
-                if (!nodoAux.isTieneHijos()) {
-                    raiz = null;
-                    return;
-                }
-                if (nodoAux.getIzquierdo() == null && nodoAux.getDerecho() != null)
-                    raiz = nodoAux.getDerecho();
-                else if (nodoAux.getIzquierdo() != null && nodoAux.getDerecho() == null)
-                    raiz = nodoAux.getIzquierdo();
-                if (nodoAux.getIzquierdo() != null && nodoAux.getDerecho() != null) {
-                    nodoArbol nuevaRaiz = mayorDeMenores(nodoAux);
-                    nodoArbol padre = buscar(nuevaRaiz.getDato(), raiz);
-                    padre.setDerecho(nuevaRaiz.getIzquierdo());
-                    nuevaRaiz.setIzquierdo(nodoAux.getIzquierdo());
-                    nuevaRaiz.setDerecho(nodoAux.getDerecho());
-                    raiz = nuevaRaiz;
-                }
-                nodoAux.setDerecho(null);
-                nodoAux.setIzquierdo(null);
-                return;
-            }
-            if (dato < nodoAux.getDato()) {
-                if (nodoAux.getIzquierdo().isTieneHijos()) {
-                    if (nodoAux.getIzquierdo().getIzquierdo() == null)
-                        nodoAux.setIzquierdo(nodoAux.getIzquierdo().getDerecho());
-                    else if (nodoAux.getIzquierdo().getDerecho() == null)
-                        nodoAux.setIzquierdo(nodoAux.getIzquierdo().getIzquierdo());
-                } else {
-                    nodoAux.setIzquierdo(null);
-                    if (nodoAux.getDerecho() == null)
-                        nodoAux.setTieneHijos(false);
-                    return;
-                }
-                if (nodoAux.getIzquierdo().getIzquierdo() != null && nodoAux.getIzquierdo().getDerecho() != null) {
-                    nodoArbol nodoBorrar = nodoAux.getIzquierdo();
-                    nodoArbol nodoMenor = mayorDeMenores(nodoBorrar);
-                    nodoArbol padreMenor = buscar(nodoMenor.getDato(), raiz);
-                    nodoArbol hijoMenor = nodoMenor.getIzquierdo();
-                    if (nodoBorrar.getIzquierdo() == nodoMenor)
-                        nodoMenor.setIzquierdo(nodoMenor.getIzquierdo());
-                    else
-                        nodoMenor.setIzquierdo(nodoBorrar.getIzquierdo());
-                    nodoMenor.setDerecho(nodoBorrar.getDerecho());
-                    nodoBorrar.setIzquierdo(null);
-                    nodoBorrar.setDerecho(null);
-                    padreMenor.setDerecho(hijoMenor);
-                    nodoAux.setIzquierdo(nodoMenor);
-                }
-                return;
-            } else {
-                if (nodoAux.getDerecho().isTieneHijos()) {
-                    if (nodoAux.getDerecho().getIzquierdo() == null && nodoAux.getDerecho().getDerecho() != null)
-                        nodoAux.setDerecho(nodoAux.getDerecho().getDerecho());
-                    else if (nodoAux.getDerecho().getDerecho() == null && nodoAux.getDerecho().getIzquierdo() != null)
-                        nodoAux.setDerecho(nodoAux.getDerecho().getIzquierdo());
-                } else {
-                    nodoAux.setDerecho(null);
-                    if (nodoAux.getIzquierdo() == null)
-                        nodoAux.setTieneHijos(false);
-                    return;
-                }
-                if (nodoAux.getDerecho().getIzquierdo() != null && nodoAux.getDerecho().getDerecho() != null) {
-                    nodoArbol nodoBorrar = nodoAux.getDerecho();
-                    nodoArbol nodoMenor = mayorDeMenores(nodoBorrar);
-                    nodoArbol padreMenor = buscar(nodoMenor.getDato(), raiz);
-                    nodoArbol hijoMenor = nodoMenor.getIzquierdo();
-                    if (nodoBorrar.getIzquierdo() == nodoMenor)
-                        nodoMenor.setIzquierdo(nodoMenor.getIzquierdo());
-                    else
-                        nodoMenor.setIzquierdo(nodoBorrar.getIzquierdo());//
-                    nodoMenor.setDerecho(nodoBorrar.getDerecho());
-                    nodoBorrar.setIzquierdo(null);
-                    nodoBorrar.setDerecho(null);
-                    padreMenor.setDerecho(hijoMenor);
-                    nodoAux.setDerecho(nodoMenor);
-                }
-            }
+        if (nodoAux == null) {
+            System.out.println("no se encontro el elemento");
             return;
         }
-        System.out.println("no se encontro el elemento");
+        if (dato == raiz.getDato()) {
+            if (!nodoAux.isTieneHijos()) {
+                raiz = null;
+                return;
+            }
+            if (nodoAux.getIzquierdo() == null && nodoAux.getDerecho() != null)
+                raiz = nodoAux.getDerecho();
+            else if (nodoAux.getIzquierdo() != null && nodoAux.getDerecho() == null)
+                raiz = nodoAux.getIzquierdo();
+            if (nodoAux.getIzquierdo() != null && nodoAux.getDerecho() != null) {
+                nodoArbol nuevaRaiz = mayorDeMenores(nodoAux);
+                nodoArbol padre = buscar(nuevaRaiz.getDato(), raiz);
+                padre.setDerecho(nuevaRaiz.getIzquierdo());
+                nuevaRaiz.setIzquierdo(nodoAux.getIzquierdo());
+                nuevaRaiz.setDerecho(nodoAux.getDerecho());
+                raiz = nuevaRaiz;
+            }
+            nodoAux.setDerecho(null);
+            nodoAux.setIzquierdo(null);
+            return;
+        }
+        if (dato < nodoAux.getDato()) {
+            if (nodoAux.getIzquierdo().isTieneHijos()) {
+                if (nodoAux.getIzquierdo().getIzquierdo() == null)
+                    nodoAux.setIzquierdo(nodoAux.getIzquierdo().getDerecho());
+                else if (nodoAux.getIzquierdo().getDerecho() == null)
+                    nodoAux.setIzquierdo(nodoAux.getIzquierdo().getIzquierdo());
+            } else {
+                nodoAux.setIzquierdo(null);
+                if (nodoAux.getDerecho() == null)
+                    nodoAux.setTieneHijos(false);
+                return;
+            }
+            if (nodoAux.getIzquierdo().getIzquierdo() != null && nodoAux.getIzquierdo().getDerecho() != null) {
+                nodoArbol nodoBorrar = nodoAux.getIzquierdo();
+                nodoArbol nodoMenor = mayorDeMenores(nodoBorrar);
+                nodoArbol padreMenor = buscar(nodoMenor.getDato(), raiz);
+                nodoArbol hijoMenor = nodoMenor.getIzquierdo();
+                if (nodoBorrar.getIzquierdo() == nodoMenor)
+                    nodoMenor.setIzquierdo(nodoMenor.getIzquierdo());
+                else
+                    nodoMenor.setIzquierdo(nodoBorrar.getIzquierdo());
+                nodoMenor.setDerecho(nodoBorrar.getDerecho());
+                nodoBorrar.setIzquierdo(null);
+                nodoBorrar.setDerecho(null);
+                padreMenor.setDerecho(hijoMenor);
+                nodoAux.setIzquierdo(nodoMenor);
+            }
+            return;
+        } else {
+            if (nodoAux.getDerecho().isTieneHijos()) {
+                if (nodoAux.getDerecho().getIzquierdo() == null && nodoAux.getDerecho().getDerecho() != null)
+                    nodoAux.setDerecho(nodoAux.getDerecho().getDerecho());
+                else if (nodoAux.getDerecho().getDerecho() == null && nodoAux.getDerecho().getIzquierdo() != null)
+                    nodoAux.setDerecho(nodoAux.getDerecho().getIzquierdo());
+            } else {
+                nodoAux.setDerecho(null);
+                if (nodoAux.getIzquierdo() == null)
+                    nodoAux.setTieneHijos(false);
+                return;
+            }
+            if (nodoAux.getDerecho().getIzquierdo() != null && nodoAux.getDerecho().getDerecho() != null) {
+                nodoArbol nodoBorrar = nodoAux.getDerecho();
+                nodoArbol nodoMenor = mayorDeMenores(nodoBorrar);
+                nodoArbol padreMenor = buscar(nodoMenor.getDato(), raiz);
+                nodoArbol hijoMenor = nodoMenor.getIzquierdo();
+                if (nodoBorrar.getIzquierdo() == nodoMenor)
+                    nodoMenor.setIzquierdo(nodoMenor.getIzquierdo());
+                else
+                    nodoMenor.setIzquierdo(nodoBorrar.getIzquierdo());//
+                nodoMenor.setDerecho(nodoBorrar.getDerecho());
+                nodoBorrar.setIzquierdo(null);
+                nodoBorrar.setDerecho(null);
+                padreMenor.setDerecho(hijoMenor);
+                nodoAux.setDerecho(nodoMenor);
+            }
+        }
     }
 
     public nodoArbol mayorDeMenores(nodoArbol nodo) {
