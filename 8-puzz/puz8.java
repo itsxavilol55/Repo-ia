@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.LinkedList;
 
 public class puz8 {
@@ -26,21 +27,38 @@ public class puz8 {
         while (!cola.isEmpty()) {
             nivel++;
             String nodo = cola.poll();
-            if (cumpleObjetivo(nodo))
-                return;
             ArrayList<String> sucesores = getSucesor(nodo);
             for (String hijo : sucesores) {
                 if (!sucesoresTotales.contains(hijo)) {
                     cola.add(hijo);
                     sucesoresTotales.add(hijo);
-                    imprimir(hijo,nivel);
+                    imprimir(hijo, nivel);
+                    if (cumpleObjetivo(hijo))
+                        return;
                 }
             }
         }
     }
 
     public static void BusquedaProfundidad(String Inicial) {
-
+        Stack<String> pila = new Stack<>();
+        pila.add(Inicial);
+        sucesoresTotales.add(Inicial);
+        int nivel = 0;
+        while (!pila.isEmpty()) {
+            nivel++;
+            String nodo = pila.pop();
+            ArrayList<String> sucesores = getSucesor(nodo);
+            for (String hijo : sucesores) {
+                if (!sucesoresTotales.contains(hijo)) {
+                    pila.add(hijo);
+                    sucesoresTotales.add(hijo);
+                    imprimir(hijo, nivel);
+                    if (cumpleObjetivo(hijo))
+                        return;
+                }
+            }
+        }
     }
 
     public static ArrayList<String> getSucesor(String estadoActual) {
@@ -67,7 +85,7 @@ public class puz8 {
     }
 
     private static void imprimir(String hijo, int nivel) {
-        System.out.println("--"+nivel+"--");
+        System.out.println("--" + nivel + "--");
         for (int i = 0; i < hijo.length(); i++) {
             if ((i + 1) % 3 == 0)
                 System.out.println(hijo.charAt(i) + " ");
@@ -76,9 +94,9 @@ public class puz8 {
         }
         System.out.println("-----");
         // try {
-        //     Thread.sleep(100); // Retrasa la ejecución durante 1 segundo
+        // Thread.sleep(100); // Retrasa la ejecución durante 1 segundo
         // } catch (InterruptedException e) {
-        //     e.printStackTrace();
+        // e.printStackTrace();
         // }
     }
 }
