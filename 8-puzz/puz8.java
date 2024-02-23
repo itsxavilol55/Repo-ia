@@ -30,9 +30,9 @@ public class puz8 {
     }
 
     private static void busqueda(String Inicial, estructura estructura) {
+        sucesoresTotales.clear();
         estructura.add(Inicial);
         sucesoresTotales.add(Inicial);
-        int totalNodos = 0;
         while (!estructura.isEmpty()) {
             String nodo = estructura.remove();
             ArrayList<String> sucesores = getSucesor(nodo);
@@ -40,10 +40,10 @@ public class puz8 {
                 if (!sucesoresTotales.contains(hijo)) {
                     estructura.add(hijo);
                     sucesoresTotales.add(hijo);
-                    totalNodos++;
-                    imprimir(hijo, totalNodos);
-                    if (cumpleObjetivo(hijo))
+                    if (cumpleObjetivo(hijo)) {
+                        System.out.println("nodos visitados: " + sucesoresTotales.size());
                         return;
+                    }
                 }
             }
         }
