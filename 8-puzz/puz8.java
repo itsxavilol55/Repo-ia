@@ -19,41 +19,29 @@ public class puz8 {
             new int[] { 4, 6, 8 },
             new int[] { 5, 7 });
 
-    public static void BusquedaAnchura(String Inicial) {// 7245 6831
+    public static void BusquedaAnchura(String Inicial) {
         Queue<String> cola = new LinkedList<>();
-        cola.add(Inicial);
-        sucesoresTotales.add(Inicial);
-        int nivel = 0;
-        while (!cola.isEmpty()) {
-            nivel++;
-            String nodo = cola.poll();
-            ArrayList<String> sucesores = getSucesor(nodo);
-            for (String hijo : sucesores) {
-                if (!sucesoresTotales.contains(hijo)) {
-                    cola.add(hijo);
-                    sucesoresTotales.add(hijo);
-                    imprimir(hijo, nivel);
-                    if (cumpleObjetivo(hijo))
-                        return;
-                }
-            }
-        }
+        busqueda(Inicial, new estructura(cola));
     }
 
     public static void BusquedaProfundidad(String Inicial) {
         Stack<String> pila = new Stack<>();
-        pila.add(Inicial);
+        busqueda(Inicial, new estructura(pila));
+    }
+
+    private static void busqueda(String Inicial, estructura estructura) {
+        estructura.add(Inicial);
         sucesoresTotales.add(Inicial);
-        int nivel = 0;
-        while (!pila.isEmpty()) {
-            nivel++;
-            String nodo = pila.pop();
+        int totalNodos = 0;
+        while (!estructura.isEmpty()) {
+            String nodo = estructura.remove();
             ArrayList<String> sucesores = getSucesor(nodo);
             for (String hijo : sucesores) {
                 if (!sucesoresTotales.contains(hijo)) {
-                    pila.add(hijo);
+                    estructura.add(hijo);
                     sucesoresTotales.add(hijo);
-                    imprimir(hijo, nivel);
+                    totalNodos++;
+                    imprimir(hijo, totalNodos);
                     if (cumpleObjetivo(hijo))
                         return;
                 }
