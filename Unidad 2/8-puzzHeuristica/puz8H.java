@@ -56,7 +56,8 @@ public class puz8H {
         int indice = actual.indexOf(" ");// obtiene la posicion donde esta el espacio
         for (int valor : movimientos.get(indice)) {
             String suceso = cambiaEstado(actual, indice, valor);
-            sucesores.add(new nodo(suceso,obtenerCosto(suceso)));
+            // sucesores.add(new nodo(suceso,heuristica1(suceso)));
+            sucesores.add(new nodo(suceso,heuristica2(suceso,valor)));
         }
         int mayor=0,indiceMayor=0;
         for (int i = 0; i < sucesores.size(); i++) {
@@ -70,14 +71,16 @@ public class puz8H {
         return sucesores;
     }
 
-    private static int obtenerCosto(String suceso) {
+    private static int heuristica1(String suceso) {//heuristica basada en que tan cercano esta al objetivo
         int costo=0;
         for (int i = 0; i < suceso.length(); i++) 
             if (suceso.charAt(i)==(estadoObjetivo.charAt(i))) 
                 costo++;
         return costo;
     }
-
+    private static int heuristica2(String suceso, int valor) {//heuristica basada en peso para cada ficha
+        return suceso.charAt(valor);
+    }
     private static String cambiaEstado(String estadoActual, int index, int valor) {
         char c1 = estadoActual.charAt(index);
         char c2 = estadoActual.charAt(valor);
