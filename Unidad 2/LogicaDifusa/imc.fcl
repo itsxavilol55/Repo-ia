@@ -1,24 +1,26 @@
 FUNCTION_BLOCK temperature_controller
 VAR_INPUT
-    temperatura : REAL; // Entrada: temperatura medida en grados Celsius
-END_VAR
-VAR_OUTPUT
-    tiempo_encendido : REAL; // Salida: tiempo de encendido del horno en minutos
+    altura : REAL; // altura medida en CM
+    peso : REAL; // peso medido en KG
 END_VAR
 
-FUZZIFY temperatura
-    TERM baja := (0,0) (0,140);
+VAR_OUTPUT
+    categoria : REAL; // Salida: que tipo de peso tiene
+END_VAR
+
+FUZZIFY altura
+    TERM baja := (0,0) (0,120);
     TERM media := (0,140)(1,170)(1,180)(0,190);
     TERM alta := (0,190)(1,200);
 END_FUZZIFY
 
-FUZZIFY tiempo_encendido
+FUZZIFY peso
     TERM corto := (0, 1) (10, 0) (20, 0);
     TERM medio := (15, 0) (25, 1) (35, 0);
-    TERM largo := (30, 0) (40, 0) (50, 1);
+    TERM largo := (30, 0) (40, 0) (80, 1);
 END_FUZZIFY
 
-DEFUZZIFY tiempo_encendido
+DEFUZZIFY categoria
     METHOD : COG;
     RANGE : 0..50;
     DEFAULT := 25;
@@ -31,17 +33,17 @@ END_DEFUZZIFY
 RULEBLOCK control
     AND : MIN;
     ACT : MIN;
-    RULE 1 : IF temperatura IS baja THEN tiempo_encendido IS corto;
-    RULE 2 : IF temperatura IS media THEN tiempo_encendido IS medio;
-    RULE 3 : IF temperatura IS alta THEN tiempo_encendido IS largo;
-
-    RULE 4 : IF temperatura IS baja AND tiempo_encendido IS corto THEN tiempo_encendido IS corto;
-    RULE 5 : IF temperatura IS baja AND tiempo_encendido IS medio THEN tiempo_encendido IS corto;
-    RULE 6 : IF temperatura IS baja AND tiempo_encendido IS largo THEN tiempo_encendido IS corto;
-    RULE 7 : IF temperatura IS media AND tiempo_encendido IS corto THEN tiempo_encendido IS corto;
-    RULE 8 : IF temperatura IS media AND tiempo_encendido IS medio THEN tiempo_encendido IS medio;
-    RULE 9 : IF temperatura IS media AND tiempo_encendido IS largo THEN tiempo_encendido IS largo;
-    RULE 10 : IF temperatura IS alta AND tiempo_encendido IS corto THEN tiempo_encendido IS corto;
-    RULE 11 : IF temperatura IS alta AND tiempo_encendido IS medio THEN tiempo_encendido IS medio;
-    RULE 12 : IF temperatura IS alta AND tiempo_encendido IS largo THEN tiempo_encendido IS largo;
+    RULE 1 : IF altura IS baja THEN categoria IS corto;
+    RULE 2 : IF altura IS media THEN categoria IS medio;
+    RULE 3 : IF altura IS alta THEN categoria IS largo;
+    RULE 4 : IF altura IS baja AND categoria IS corto THEN categoria IS corto;
+    RULE 5 : IF altura IS baja AND categoria IS medio THEN categoria IS corto;
+    RULE 6 : IF altura IS baja AND categoria IS largo THEN categoria IS corto;
+    RULE 7 : IF altura IS media AND categoria IS corto THEN categoria IS corto;
+    RULE 8 : IF altura IS media AND categoria IS medio THEN categoria IS medio;
+    RULE 9 : IF altura IS media AND categoria IS largo THEN categoria IS largo;
+    RULE 10 : IF altura IS alta AND categoria IS corto THEN categoria IS corto;
+    RULE 11 : IF altura IS alta AND categoria IS medio THEN categoria IS medio;
+    RULE 12 : IF altura IS alta AND categoria IS largo THEN categoria IS largo;
 END_RULEBLOCK
+END_FUNCTION_BLOCK
