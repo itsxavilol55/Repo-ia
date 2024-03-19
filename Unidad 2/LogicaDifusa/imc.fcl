@@ -1,4 +1,4 @@
-FUNCTION_BLOCK temperature_controller
+FUNCTION_BLOCK imc
 VAR_INPUT
     altura : REAL; // altura medida en CM
     peso : REAL; // peso medido en KG
@@ -43,7 +43,5 @@ RULEBLOCK control
     RULE 8 : IF altura IS media AND categoria IS medio THEN categoria IS medio;
     RULE 9 : IF altura IS media AND categoria IS largo THEN categoria IS largo;
     RULE 10 : IF altura IS alta AND categoria IS corto THEN categoria IS corto;
-    RULE 11 : IF altura IS alta AND categoria IS medio THEN categoria IS medio;
-    RULE 12 : IF altura IS alta AND categoria IS largo THEN categoria IS largo;
 END_RULEBLOCK
 END_FUNCTION_BLOCK
