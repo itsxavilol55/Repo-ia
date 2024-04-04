@@ -1,0 +1,37 @@
+origen,destino,costo
+Tijuana,Ensenada,300
+Tijuana,Mexicali,400
+Ensenada,Mexicali,640
+Mexicali,Nogales,1210
+Nogales,Hermosillo,760
+Nogales,Ciudad Juarez,1300
+Hermosillo,Guaymas,400
+Hermosillo,Cuauhtemoc,1500
+Guaymas,Ciudad Obregon,320
+Ciudad Obregon,Navojoa,380
+Navojoa,Los Mochis,540
+Los Mochis,Culiacan,600
+Culiacan,Cosala,180
+Culiacan,Mazatlan,280
+Culiacan,Parral,1100
+Culiacan,La Cruz,210
+La Cruz,Cosala,160
+La Cruz,Mazatlan,150
+Mazatlan,Tepic,1300
+Mazatlan,Victoria,900
+Tepic,Guadalajara,780
+Tepic,Victoria,1450
+Tepic,Puerto Vallarta,430
+Guadalajara,Colima,895
+Puerto Vallarta,Colima,1200
+Guadalajara,Aguascalientes,1500
+Guadalajara,Zacatecas,1800
+Aguascalientes,Zacatecas,600
+Zacatecas,Victoria,600
+Victoria,Parral,940
+Parral,Cuauhtemoc,500
+Chihuahua,Cuauhtemoc,450
+Cuauhtemoc,Ciudad Juarez,783
+Chihuahua,Torreon,1200
+Torreon,Victoria,450
+Torreon,Zacatecas,670
